@@ -13,25 +13,8 @@ class Book {
 
 class UI {
     static showBooks() {
-          const storedBooks = [
-          {
-            title : ' Alade ti de',
-            author : ' Wonuola Alonge',
-            isbn : ' 01110'
-          },
-          {
-            title : ' Omo Oko',
-            author : ' Yinyinloluwa Alonge',
-            isbn : ' 01111'
-          },
-          {
-            title : ' Aseyori',
-            author : ' Havilah Alonge',
-            isbn : ' 01112'
-          }
-        
-          ];
-          const books = storedBooks;
+       
+          const books = Store.getBooks();
           books.forEach ((book) => UI.addBookToList(book))
     }
     static addBookToList(book){
@@ -69,10 +52,42 @@ class UI {
         document.querySelector('#isbn').value = '';
 
     }
+ 
 }
 
 // store class :handles storage
+ class store{
+    static getBooks(){
+ let books;
+ if (localstorage.getItem('books') === null) {
+    books = [];
 
+ }
+ else{ 
+    JSON.parse(localStorage.getItem('books'));
+ }
+ return books;
+    }
+    static addBook(book){
+        const books = Store.getBooks();
+        books.push(book);
+        localStorage.setItem('books', JSON.stringify(books));
+    }
+    static removeBook(isbn){
+
+        const books = Store.getBooks();
+        books.forEach((book, index) =>{
+
+            if (book.isbn === isbn) {
+                books.splice( index, 1);
+            }
+
+        });
+
+        localStorage.setItem('books', JSON.stringify(books))
+    }
+
+ }
 //event display book
 document.addEventListener('DOMContentLoaded', UI.showBooks);
 //event add book 
