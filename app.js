@@ -56,15 +56,15 @@ class UI {
 }
 
 // store class :handles storage
- class store{
+ class Store{
     static getBooks(){
  let books;
- if (localstorage.getItem('books') === null) {
+ if (localStorage.getItem('books') === null) {
     books = [];
 
  }
  else{ 
-    JSON.parse(localStorage.getItem('books'));
+   books = JSON.parse(localStorage.getItem('books'));
  }
  return books;
     }
@@ -104,18 +104,23 @@ document.getElementById('book-form').addEventListener('submit', (e)=>{
     if (title === '' || author === '' || isbn === '' ) {
         UI.showAlert( 'please finish' , 'danger')
     }
-
+else{
     // instanstiate a book
 
     const book = new Book(title, author, isbn);
     
-    // addd book to list
+    // add book to list
     UI.addBookToList(book); 
 
+    //add book to storage
+    Store.addBook(book);
+
 // show success
-UI.showAlert('Book Added', 'success')
+UI.showAlert('Book Added', 'success');
+
     // clear fields
     UI.clearFields();
+}
 
 });
 // event remove book
